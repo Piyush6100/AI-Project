@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Student Success AI - 2-Year Performance & Retention System</title>
+    <meta name="description" content="AI-powered Engineering Student Success System. Analyzes 2-year semester marks, active backlogs, attendance, and provides actionable solutions for students and faculties.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Top Navigation / Banner -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-badge">ENGINEERING FIELD SPECIALIZATION • 2-YEAR ANALYTICS</div>
+                <h1 class="header-title">College Engineering Student Success AI</h1>
+                <p class="header-subtitle">Intelligent Performance Forecasting, Retention Risk Diagnosis & Actionable Dual Solutions for Students & Faculty</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Left / Input Column -->
+            <section class="form-section">
+                <div class="card form-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <h2>Engineering Student Profile</h2>
+                            <p>Enter 2-year semester marks, active backlogs, and study engagement metrics.</p>
+                        </div>
+                        <div class="sample-presets">
+                            <span class="preset-label">Quick Test:</span>
+                            <button type="button" class="btn-preset" id="preset-pass">High Performer</button>
+                            <button type="button" class="btn-preset btn-preset-danger" id="preset-risk">At-Risk Student</button>
+                        </div>
+                    </div>
+
+                    <form id="prediction-form">
+                        <!-- Section 1: Engineering Department -->
+                        <div class="form-block">
+                            <h3 class="block-title">
+                                <span class="step-num">1</span>
+                                Engineering Branch / Department
+                            </h3>
+                            <div class="form-group full-width">
+                                <label for="Course_Program">Degree Program / Branch</label>
+                                <select id="Course_Program" name="Course_Program" required>
+                                    <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                                    <option value="Information Technology">Information Technology (IT)</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering (ECE)</option>
+                                    <option value="Electrical & Electronics Engineering">Electrical & Electronics Engineering (EEE)</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
+                                    <option value="Civil Engineering">Civil Engineering (CE)</option>
+                                    <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AI & DS)</option>
+                                    <option value="Chemical Engineering">Chemical Engineering (ChemE)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Year 1 Academic Details -->
+                        <div class="form-block">
+                            <div class="block-header-flex">
+                                <h3 class="block-title">
+                                    <span class="step-num">2</span>
+                                    1st Year Academic Marks (Semesters 1 & 2)
+                                </h3>
+                                <div class="live-pill" id="y1-live-badge">Year 1 Avg: <strong>72.5%</strong> (7.25 SGPA)</div>
+                            </div>
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label for="Sem1_Marks">1st Sem Marks (%)</label>
+                                    <input type="number" id="Sem1_Marks" name="Sem1_Marks" value="71.0" min="0" max="100" step="0.5" required>
+                                    <span class="input-hint">Scale: 0–100%</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Sem2_Marks">2nd Sem Marks (%)</label>
+                                    <input type="number" id="Sem2_Marks" name="Sem2_Marks" value="74.0" min="0" max="100" step="0.5" required>
+                                    <span class="input-hint">Scale: 0–100%</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Year1_Backlogs">1st Year Active Backlogs</label>
+                                    <input type="number" id="Year1_Backlogs" name="Year1_Backlogs" value="0" min="0" max="12" required>
+                                    <span class="input-hint">Uncleared arrears</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Year 2 Academic Details -->
+                        <div class="form-block">
+                            <div class="block-header-flex">
+                                <h3 class="block-title">
+                                    <span class="step-num">3</span>
+                                    2nd Year Academic Marks (Semesters 3 & 4)
+                                </h3>
+                                <div class="live-pill" id="y2-live-badge">Year 2 Avg: <strong>70.8%</strong> (7.08 SGPA)</div>
+                            </div>
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label for="Sem3_Marks">3rd Sem Marks (%)</label>
+                                    <input type="number" id="Sem3_Marks" name="Sem3_Marks" value="70.0" min="0" max="100" step="0.5" required>
+                                    <span class="input-hint">Departmental core</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Sem4_Marks">4th Sem Marks (%)</label>
+                                    <input type="number" id="Sem4_Marks" name="Sem4_Marks" value="71.5" min="0" max="100" step="0.5" required>
+                                    <span class="input-hint">Departmental core</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Year2_Backlogs">2nd Year Active Backlogs</label>
+                                    <input type="number" id="Year2_Backlogs" name="Year2_Backlogs" value="0" min="0" max="12" required>
+                                    <span class="input-hint">Uncleared arrears</span>
+                                </div>
+                            </div>
+
+                            <!-- Real-time 2-Year Summary Banner -->
+                            <div class="trajectory-banner" id="trajectory-banner">
+                                <div class="traj-item">
+                                    <span class="traj-label">Cumulative 2-Yr CGPA</span>
+                                    <span class="traj-val" id="traj-cgpa">7.16 / 10.0</span>
+                                </div>
+                                <div class="traj-item">
+                                    <span class="traj-label">Progression Trend</span>
+                                    <span class="traj-val trend-neutral" id="traj-trend">-1.7% (Steady)</span>
+                                </div>
+                                <div class="traj-item">
+                                    <span class="traj-label">Total Backlogs</span>
+                                    <span class="traj-val" id="traj-backlogs">0 Subjects</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Practical Study & Engagement Factors -->
+                        <div class="form-block">
+                            <h3 class="block-title">
+                                <span class="step-num">4</span>
+                                Practical Engineering Engagement & Attendance
+                            </h3>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="Attendance_Percentage">Lecture & Lab Attendance (%)</label>
+                                    <input type="number" id="Attendance_Percentage" name="Attendance_Percentage" value="86" min="0" max="100" required>
+                                    <span class="input-hint">University requirement: ≥75%</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Study_Hours_Per_Week">Self-Study Time (Hours / Week)</label>
+                                    <input type="number" id="Study_Hours_Per_Week" name="Study_Hours_Per_Week" value="22" min="0" max="80" required>
+                                    <span class="input-hint">Target: 15–25 hrs/week</span>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="Tutoring_Sessions">Faculty Mentorship / Lab Sessions / Month</label>
+                                    <input type="number" id="Tutoring_Sessions" name="Tutoring_Sessions" value="2" min="0" max="20" required>
+                                    <span class="input-hint">Doubt clearing & lab practice</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Previous_Academic_Score">Prior 12th / Diploma / Entrance Score (%)</label>
+                                    <input type="number" id="Previous_Academic_Score" name="Previous_Academic_Score" value="78.0" min="0" max="100" step="0.1" required>
+                                    <span class="input-hint">High school or polytechnic score</span>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="Motivation_Level">Study Motivation Level</label>
+                                    <select id="Motivation_Level" name="Motivation_Level" required>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High" selected>High</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Access_to_Resources">Access to Labs & Computing Tools</label>
+                                    <select id="Access_to_Resources" name="Access_to_Resources" required>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High" selected>High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn btn-primary">
+                            <span class="btn-text">Run Engineering Analysis & Predict</span>
+                            <span class="btn-spinner hidden" id="btn-spinner"></span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Right / Results Column -->
+            <section class="results-section">
+                <!-- Placeholder when no prediction run yet -->
+                <div id="results-placeholder" class="card placeholder-card">
+                    <div class="placeholder-icon">📊</div>
+                    <h3>Engineering Evaluation Ready</h3>
+                    <p>Enter the student's 2-year semester marks, active backlogs, and attendance, then click <strong>"Run Engineering Analysis & Predict"</strong> to generate accurate forecasts and specialized faculty & student roadmaps.</p>
+                    <div class="quick-tips-box">
+                        <h4>Why 2-Year Analysis is Crucial in Engineering:</h4>
+                        <ul>
+                            <li><strong>Year 1 vs Year 2 Trend:</strong> Detects students stumbling in 2nd-year core departmental subjects before they accumulate fatal backlogs.</li>
+                            <li><strong>Exam Eligibility:</strong> Highlights attendance falling below the institutional 75% cutoff to prevent exam debarment.</li>
+                            <li><strong>Placement Readiness:</strong> Projects final CGPA against the 6.0+ placement threshold required by tech recruiters.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Active Results Card -->
+                <div id="results-card" class="card results-card hidden">
+                    <!-- Results Top Header -->
+                    <div class="results-top-header">
+                        <div>
+                            <span class="results-tag">PREDICTION & DIAGNOSTIC REPORT</span>
+                            <h2 class="results-title" id="res-program-title">Computer Science & Engineering</h2>
+                        </div>
+                        <div id="res-risk-badge" class="badge-risk badge-low">Low Risk (On Track)</div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <span class="metric-label">Predicted Exam Score</span>
+                            <span class="metric-value text-primary" id="res-perf-score">72.4%</span>
+                            <span class="metric-sub" id="res-honours">First Class</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Projected Final CGPA</span>
+                            <span class="metric-value text-indigo" id="res-cgpa">7.24 / 10.0</span>
+                            <span class="metric-sub">Based on 2-Year Momentum</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Dropout Status</span>
+                            <span class="metric-value text-emerald" id="res-dropout-status">Graduate</span>
+                            <span class="metric-sub" id="res-dropout-prob">Estimated Risk: 4.2%</span>
+                        </div>
+                    </div>
+
+                    <!-- 2-Year Academic Analytics Summary -->
+                    <div class="card-inner analytics-strip">
+                        <h4 class="strip-title">2-Year Engineering Academic Progression</h4>
+                        <div class="analytics-items-grid">
+                            <div class="strip-item">
+                                <span class="si-label">1st Year Average:</span>
+                                <span class="si-val" id="res-y1-avg">72.5%</span>
+                            </div>
+                            <div class="strip-item">
+                                <span class="si-label">2nd Year Average:</span>
+                                <span class="si-val" id="res-y2-avg">70.8%</span>
+                            </div>
+                            <div class="strip-item">
+                                <span class="si-label">2-Year Aggregate:</span>
+                                <span class="si-val" id="res-cum-marks">71.6%</span>
+                            </div>
+                            <div class="strip-item">
+                                <span class="si-label">Progression Trend:</span>
+                                <span class="si-val" id="res-trend">-1.7%</span>
+                            </div>
+                            <div class="strip-item">
+                                <span class="si-label">Active Backlogs:</span>
+                                <span class="si-val" id="res-total-backlogs">0 (Y1: 0, Y2: 0)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dual Solutions Tabs -->
+                    <div class="solutions-container">
+                        <div class="solutions-tabs">
+                            <button type="button" class="tab-btn active" id="tab-btn-faculty" onclick="switchTab('faculty')">
+                                👨‍🏫 Faculty & Mentor Advisory
+                            </button>
+                            <button type="button" class="tab-btn" id="tab-btn-student" onclick="switchTab('student')">
+                                🎓 Student Success Roadmap
+                            </button>
+                        </div>
+
+                        <!-- Faculty Tab Content -->
+                        <div class="tab-content" id="tab-faculty">
+                            <div class="solution-intro faculty-intro">
+                                <strong>Departmental & Mentor Interventions:</strong> Specific actionable steps for Engineering HODs, Class Incharges, and Faculty Mentors to support retention and academic growth.
+                            </div>
+                            <ul class="solution-list faculty-list" id="faculty-solutions-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+
+                        <!-- Student Tab Content -->
+                        <div class="tab-content hidden" id="tab-student">
+                            <div class="solution-intro student-intro">
+                                <strong>Personalized Student Action Plan:</strong> Practical recommendations for clearing pending arrears, optimizing study routines, and elevating CGPA for campus placements.
+                            </div>
+                            <ul class="solution-list student-list" id="student-solutions-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Diagnostic Risk Factors -->
+                    <div class="card-inner risk-factors-box">
+                        <h4 class="risk-box-title">Why This Risk? (Engineering Diagnostic Indicators)</h4>
+                        <ul class="factors-bullet-list" id="risk-factors-list">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Engineering Academic Success & Dropout Early Warning System • Powered by Machine Learning & Curricular Analytics</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

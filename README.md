@@ -1,64 +1,87 @@
-# College Student Performance & Dropout Risk Prediction System
+# Engineering College Student Performance & Retention Prediction System
 
-## Project Overview
+## 1. Project Overview
 
-This project provides a practical, unified Machine Learning system that predicts **BOTH**:
-1. **Academic Performance** (Continuous Exam Score 0–100)
-2. **Dropout Risk Status** (`Graduate`, `Dropout`, `Enrolled` + Dropout Probability %)
+This project provides an AI-powered academic performance forecasting and retention risk diagnosis system designed specifically for **Engineering Colleges and Universities**.
 
-It also includes an **Early Academic Support Layer**:
-- **Why This Risk? (Risk Factors)**: Human-readable explanations derived from the student's actual input values and trained feature boundaries.
-- **Personalized Suggestions**: Actionable academic advice customized to the student's situation.
-
-Both predictions and explanations are evaluated simultaneously from a **SINGLE common set of 12 student study features**.
-
----
-
-## Combined Dataset (`combined_student_dataset.csv`)
-
-The two original datasets (`student_performance.csv` and `student_dropout.csv`) were cleaned, standardized, and aligned into `combined_student_dataset.csv`:
-
-### Common Features (12 Study & College Factors)
-- `Course_Program` (Degree / Major Field)
-- `Sem1_Courses_Enrolled` (Subjects Enrolled)
-- `Sem1_Courses_Approved` (Subjects Passed)
-- `Study_Hours_Per_Week` (Weekly Self-Study Hours)
-- `Attendance_Percentage` (Lecture Attendance Rate 0–100%)
-- `Tutoring_Sessions` (Monthly Mentoring / Tutoring Sessions)
-- `Motivation_Level` (Low / Medium / High)
-- `Access_to_Resources` (Low / Medium / High)
-- `Previous_Academic_Score` (Prior Marks / GPA 0–100)
-- `Sem1_Average_Grade` (1st Semester Marks 0–20)
-- `Tuition_Fees_Up_To_Date` (Payment Status: Yes / No)
-- `Scholarship_Holder` (Recipient Status: Yes / No)
+It evaluates engineering students across **2-Year Semester Marks (Semesters 1, 2, 3, and 4)**, **active backlogs**, and **practical laboratory/attendance factors** to deliver:
+1. **Academic Performance Forecasting**: Continuous Exam Score (0–100%), Projected Final CGPA (out of 10.0), and Academic Honours Division (First Class with Distinction, First Class, Second Class, etc.).
+2. **Retention & Dropout Risk Status**: Multi-class Status (`Graduate` / On Track, `Enrolled` / Needs Advisory, `Dropout` Risk) + Calibrated Dropout Risk %.
+3. **2-Year Progression & Trajectory Analytics**: Real-time evaluation of Year 1 vs Year 2 trends to detect students struggling with departmental core engineering subjects.
+4. **Actionable Dual Solutions**:
+   - **For Engineering Faculties & Mentors**: Institutional early warnings, departmental counseling, remedial tutorial batches in core subjects (Engineering Mathematics, Circuits, Mechanics, Coding), and exam eligibility notices.
+   - **For Students**: Step-by-step roadmap for clearing pending arrears/backlogs, dedicated weekly study/lab practice targets, and campus placement CGPA goals.
 
 ---
 
-## Machine Learning Models & Evaluation
+## 2. Engineering Curriculum & 2-Year Feature Architecture
 
-### 1. Performance Models (Regression Target: `Performance_Target`)
-- **Linear Regression** (Selected Best Model: $R^2 = 0.6844$, MAE $= 1.0810$, RMSE $= 2.1121$)
-- **Decision Tree Regressor** ($R^2 = 0.1881$, MAE $= 1.6826$, RMSE $= 3.3876$)
-- **Random Forest Regressor** ($R^2 = 0.6119$, MAE $= 1.3060$, RMSE $= 2.3421$)
+All administrative noise (such as *Tuition Fees Up to Date* and *Scholarship Holder*) has been removed to maintain 100% focus on practical academic metrics.
 
-### 2. Dropout Models (Classification Target: `Dropout_Target`)
-- **Random Forest Classifier** (Selected Best Model: Weighted F1 $= 0.7094$, Accuracy $= 0.7254$)
-- **Logistic Regression** (Weighted F1 $= 0.6931$, Accuracy $= 0.7266$)
-- **Decision Tree Classifier** (Weighted F1 $= 0.6852$, Accuracy $= 0.7062$)
+### Engineering Programs / Branches
+- Computer Science & Engineering (CSE)
+- Information Technology (IT)
+- Electronics & Communication Engineering (ECE)
+- Electrical & Electronics Engineering (EEE)
+- Mechanical Engineering (ME)
+- Civil Engineering (CE)
+- Artificial Intelligence & Data Science (AI & DS)
+- Chemical Engineering (ChemE)
+
+### 2-Year Academic Marks & Curricular Features
+- **1st Year (Foundational Sciences & Engineering Basics)**:
+  - `Sem1_Marks` (0–100%)
+  - `Sem2_Marks` (0–100%)
+  - `Year1_Backlogs` (Active uncleared arrears)
+- **2nd Year (Core Departmental Engineering Subjects)**:
+  - `Sem3_Marks` (0–100%)
+  - `Sem4_Marks` (0–100%)
+  - `Year2_Backlogs` (Active uncleared arrears)
+- **Engineered Academic Progression Metrics**:
+  - `Year1_Average_Marks` & `Year2_Average_Marks`
+  - `Academic_Progression_Trend` ($Year2 - Year1$)
+  - `Overall_2Year_Aggregate` & `Cumulative_CGPA`
+  - `Total_Backlogs` ($Year1 + Year2$)
+- **Practical Engagement & Study Factors**:
+  - `Attendance_Percentage` (Lecture & Laboratory Attendance, mandatory $\ge 75\%$ institutional threshold)
+  - `Study_Hours_Per_Week` (Weekly problem solving & programming practice)
+  - `Tutoring_Sessions` (Monthly faculty doubt-clearing and lab remedial sessions)
+  - `Previous_Academic_Score` (Prior 12th / Diploma / Entrance score 0–100)
+  - `Motivation_Level` (Low / Medium / High)
+  - `Access_to_Resources` (Low / Medium / High access to computing labs, software, and library)
 
 ---
 
-## Installation & Setup
+## 3. Machine Learning Model Performance
 
-1. **Install required packages**:
+The system uses advanced ensemble pipelines trained on harmonized student datasets (`combined_student_dataset.csv`, 11,031 records):
+
+| Model Task | Algorithm | Metric 1 | Metric 2 |
+| :--- | :--- | :--- | :--- |
+| **Academic Performance Regressor** | Histogram Gradient Boosting | **$R^2 = 0.9075$** | **RMSE = $1.14$** |
+| **Dropout & Retention Classifier** | Histogram Gradient Boosting | **Accuracy = $89.60\%$** | **Weighted $F_1 = 0.8917$** |
+
+---
+
+## 4. Installation & Setup
+
+1. **Install required dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **Run the Application**:
+2. **Train & update ML models** (optional; pre-trained `.pkl` files are included):
+   ```bash
+   python train.py
+   ```
+
+3. **Run the Application**:
    ```bash
    python main.py
    ```
 
-3. **Open Web Browser**:
-   Navigate to `http://127.0.0.1:5000`
+4. **Access the Web Portal**:
+   Open your browser and navigate to:
+   ```
+   http://127.0.0.1:5000
+   ```
